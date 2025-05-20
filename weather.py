@@ -1,6 +1,10 @@
 from typing import Any
 import httpx
 from mcp.server.fastmcp import FastMCP
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # load environment variables from .env
 
 # Initialize FastMCP server
 mcp = FastMCP("weather")
@@ -8,6 +12,7 @@ mcp = FastMCP("weather")
 # Constants
 NWS_API_BASE = "https://api.weather.gov"
 USER_AGENT = "weather-app/1.0"
+NY_TIMES_API_KEY = os.environ.get("NY_TIMES_API_KEY")
 
 async def make_nws_request(url: str) -> dict[str, Any] | None:
     """Make a request to the NWS API with proper error handling."""
@@ -22,6 +27,24 @@ async def make_nws_request(url: str) -> dict[str, Any] | None:
             return response.json()
         except Exception:
             return None
+
+@mcp.tool()
+async def get_news_headers(year, month):
+    url = f'https://api.nytimes.com/svc/archive/v1/{year}/{month}.json?api-key={NY_TIMES_API_KEY}'
+    data = await make_nws_request(url)
+    submission_res = data['response']
+
+    docs = submission_res['docs']
+
+    main_title = []
+
+    for i in range(len(docs)):
+        a = docs[i]
+        title = a['headline']
+        main_title.append(title['main'])
+
+    text = " ".join(a for a in main_title)
+    return text
 
 @mcp.tool()
 async def get_weather(latitude, longitude):
