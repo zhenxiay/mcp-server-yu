@@ -31,8 +31,11 @@ async def make_nws_request(url: str) -> dict[str, Any] | None:
 @mcp.tool()
 async def get_news_headers(year, month):
     url = f'https://api.nytimes.com/svc/archive/v1/{year}/{month}.json?api-key={NY_TIMES_API_KEY}'
-    data = await make_nws_request(url)
-    submission_res = data['response']
+    r = requests.get(url)
+    print('Status code:', r.status_code)
+
+    submission_ids = r.json()
+    submission_res = submission_ids['response']
 
     docs = submission_res['docs']
 
