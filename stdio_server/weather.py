@@ -1,5 +1,6 @@
 from typing import Any
 import httpx
+import requests
 from mcp.server.fastmcp import FastMCP
 from dotenv import load_dotenv
 import os
@@ -30,6 +31,10 @@ async def make_nws_request(url: str) -> dict[str, Any] | None:
 
 @mcp.tool()
 async def get_news_headers(year, month):
+    
+    if month.startswith("0"):
+        month = month[1:]
+
     url = f'https://api.nytimes.com/svc/archive/v1/{year}/{month}.json?api-key={NY_TIMES_API_KEY}'
     r = requests.get(url)
     print('Status code:', r.status_code)
@@ -41,12 +46,12 @@ async def get_news_headers(year, month):
 
     main_title = []
 
-    for i in range(len(docs)):
+    for i in range(5): # fetch only the top 5 headlines of the month to reduce response size
         a = docs[i]
         title = a['headline']
         main_title.append(title['main'])
 
-    text = " ".join(a for a in main_title)
+    text = "/n ".join(a for a in main_title)
     return text
 
 @mcp.tool()

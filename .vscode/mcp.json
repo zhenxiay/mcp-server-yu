@@ -1,0 +1,11 @@
+{
+    "servers": {
+        "my-mcp-server-0514c4d5": {
+            "type": "stdio",
+            "command": "python",
+            "args": [ 
+            "weather.py"
+            ]
+        }
+    }
+}
