@@ -7,7 +7,7 @@ import os
 news_mcp = FastMCP(
                    name="News_MCP",
                    port=8001,
-                   host="127.0.0.1",
+                   host="0.0.0.0",
                    stateless_http=True
                    )
 
