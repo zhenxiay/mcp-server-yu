@@ -33,7 +33,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t gcr.io/${{ input.GCP_PROJECT_ID }}/mcp-server:${{ input.tag }} .
+        docker build -t gcr.io/${{ inputs.GCP_PROJECT_ID }}/mcp-server:${{ inputs.tag }} .
 
     - name: Push Docker image
       run: |
