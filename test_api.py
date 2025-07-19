@@ -10,7 +10,7 @@ load_dotenv()  # load environment variables from .env
 NY_TIMES_API_KEY = os.environ.get("NY_TIMES_API_KEY")
 USER_AGENT = "weather-app/1.0"
 
-async def get_news_headers(year, month):
+def get_news_headers(year, month):
     url = f'https://api.nytimes.com/svc/archive/v1/{year}/{month}.json?api-key={NY_TIMES_API_KEY}'
     r = requests.get(url)
     print('Status code:', r.status_code)
@@ -22,7 +22,7 @@ async def get_news_headers(year, month):
 
     main_title = []
 
-    for i in range(len(docs)):
+    for i in range(5):
         a = docs[i]
         title = a['headline']
         main_title.append(title['main'])
