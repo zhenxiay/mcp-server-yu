@@ -1,24 +1,31 @@
 name: Build and Deploy to GKE
 
 on:
-  push:
-    branches: none
   workflow_dispatch:
+    inputs:
+      GCP_PROJECT_ID:
+        description: 'ID of the GCP project'
+        required: true
+        default: 'GCP_PROJECT'
+      Image_tag:
+        description: 'Tag for the docker image'
+        required: true
+        default: 'dev'
 
 jobs:
-  build-deploy:
+  build-push-docker-image:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    # Authenticate to GCP
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
       with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
+        credentials_json: '${{ secrets.BIGQUERY_TOKEN }}'
 
     - name: Configure Docker to use gcloud CLI
       run: |
@@ -26,8 +33,8 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/mcp-server:${{ github.sha }} .
+        docker build -t gcr.io/${{ input.GCP_PROJECT_ID }}/mcp-server:${{ input.tag }} .
 
     - name: Push Docker image
       run: |
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/mcp-server:${{ github.sha }}
+        docker push gcr.io/${{ input.GCP_PROJECT_ID }}/mcp-server:${{ input.tag }}
