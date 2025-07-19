@@ -7,7 +7,7 @@ on:
         description: 'ID of the GCP project'
         required: true
         default: 'GCP_PROJECT'
-      Image_tag:
+      tag:
         description: 'Tag for the docker image'
         required: true
         default: 'dev'
