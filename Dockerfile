@@ -7,6 +7,9 @@ ADD . /app
 
 # Sync the project into a new environment, using the frozen lockfile
 WORKDIR /app
+
+RUN uv venv .venv
+
 RUN uv sync
 
 EXPOSE 8001
