@@ -12,6 +12,6 @@ RUN uv venv .venv
 
 RUN uv sync
 
-EXPOSE 8001
+EXPOSE 8080
 
 CMD ["uv", "run", "fast_api_mcp_server/get_news_mcp.py"]
