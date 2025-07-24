@@ -14,4 +14,4 @@ RUN uv sync
 
 EXPOSE 8080
 
-CMD ["uv", "run", "fast_api_mcp_server/simple_fastapi.py"]
+CMD ["uv", "run", "fast_api_mcp_server/get_news_mcp.py"]
