@@ -26,5 +26,5 @@ async def hello_world():
     return {"message": "Hello, world!"}
 
 if __name__ == "__main__":
-    news_mcp.run(transport="streamable-http")
+    news_mcp.run(transport="sse")
     
