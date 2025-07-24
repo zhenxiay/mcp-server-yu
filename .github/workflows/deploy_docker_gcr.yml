@@ -11,6 +11,10 @@ on:
         description: 'Tag for the docker image'
         required: true
         default: 'dev'
+      image_name:
+        description: 'Name for the docker image'
+        required: true
+        default: 'mcp-server'
 
 jobs:
   build-push-docker-image:
@@ -33,8 +37,8 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t gcr.io/${{ inputs.GCP_PROJECT_ID }}/mcp-server:${{ inputs.tag }} .
+        docker build -t gcr.io/${{ inputs.GCP_PROJECT_ID }}/${{ inputs.image_name }}:${{ inputs.tag }} .
 
     - name: Push Docker image
       run: |
-        docker push gcr.io/${{ inputs.GCP_PROJECT_ID }}/mcp-server:${{ inputs.tag }}
+        docker push gcr.io/${{ inputs.GCP_PROJECT_ID }}/${{ inputs.image_name }}:${{ inputs.tag }}
